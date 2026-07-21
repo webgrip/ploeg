@@ -1,0 +1,4 @@
+/ploegd
+/dist/
+*.test
+.env
