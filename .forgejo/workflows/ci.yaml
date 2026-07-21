@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: docker
+    steps:
+      - uses: actions/checkout@v5
+      # Absolute URL: data.forgejo.org (the default action resolver) has an incomplete mirror set.
+      - uses: https://github.com/actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: false
+      - run: gofmt -l . && test -z "$(gofmt -l .)"
+      - run: go vet ./...
+      - run: go build ./...
+      - run: go test ./...
